@@ -72,9 +72,9 @@ class HillCipher:
         self.decrypt_key = None
         self.break_key = encrypt_key.shape[0]
 
-    def replace_letters(self, letter):
+    def letter_index(self, letter):
         """
-        >>> HillCipher(numpy.matrix([[2,5],[1,6]])).replace_letters('T')
+        >>> HillCipher(numpy.matrix([[2,5],[1,6]])).letter_index('T')
         19
         """
         return self.key_string.index(letter)
@@ -129,7 +129,7 @@ class HillCipher:
 
         for i in range(0, len(text) - self.break_key + 1, self.break_key):
             batch = text[i : i + self.break_key]
-            batch_vec = list(map(HillCipher(self.encrypt_key).replace_letters, batch))
+            batch_vec = list(map(HillCipher(self.encrypt_key).letter_index, batch))
             batch_vec = numpy.matrix([batch_vec]).T
             batch_encrypted = self.modulus(self.encrypt_key.dot(batch_vec)).T.tolist()[
                 0
@@ -176,7 +176,7 @@ class HillCipher:
 
         for i in range(0, len(text) - self.break_key + 1, self.break_key):
             batch = text[i : i + self.break_key]
-            batch_vec = list(map(HillCipher(self.encrypt_key).replace_letters, batch))
+            batch_vec = list(map(HillCipher(self.encrypt_key).letter_index, batch))
             batch_vec = numpy.matrix([batch_vec]).T
             batch_decrypted = self.modulus(self.decrypt_key.dot(batch_vec)).T.tolist()[
                 0
